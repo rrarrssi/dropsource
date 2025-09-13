@@ -2,18 +2,186 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>DSA 3LAB2</title>
+
+    <style>
+        .code-container {
+            position: relative;
+            background: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-family: monospace;
+        }
+    </style>
 </head>
 <body>
     <H1>
-        Hello Ralph
+        Hello Sir. Alvin
     </H1>
-    <H2>
-        Ralph
-    </H2>
-    <h3>
-        Ralph2
-    </h3>
 
+    <div class="code-container">
+        <button onclick="copyCode()">Copy</button>
+        <pre><code id="code-snippet">
+    package org.example;
+
+
+class BSTNode{
+    int key;
+    BSTNode left,right;
+    BSTNode(int key){
+        this.key = key;
+    }
+}
+
+class BST {
+    BSTNode root;
+
+    BST() {
+        root = null;
+    }
+
+    public void insert(int k){
+        root = insertRec(root, k);
+    }
+
+    private BSTNode insertRec(BSTNode n, int k){
+        if(n == null){
+            return new BSTNode(k);
+        }
+        if(k < n.key){
+            n.left = insertRec(n.left, k);
+        } else if(k > n.key){
+            n.right = insertRec(n.right, k);
+        }
+        return n;
+    }
+
+    public boolean search(BSTNode n, int k){
+        if(n == null){
+            return false;
+        }
+        if(k == n.key){
+            return true;
+        }
+        if(k < n.key){
+            return search(n.left, k);
+        } else{
+            return search(n.right, k);
+        }
+    }
+
+    public void deleteKey(int k){
+        root = deleteRec(root, k);
+    }
+
+    private BSTNode deleteRec(BSTNode n, int k){
+        if(n == null)return null;
+
+        if(k < n.key){
+            n.left = deleteRec(n.left, k);
+        } else if (k > n.key) {
+            n.right = deleteRec(n.right, k);
+        } else {
+            if (n.left == null && n.right == null ) {
+                return null;
+            } else if (n.left == null) {
+                return n.right;
+            } else if (n.right == null) {
+                return n.left;
+            }
+            n.key = minValue(n.right);
+            n.right = deleteRec(n.right, n.key);
+        }
+        return n;
+    }
+
+    private int minValue(BSTNode n){
+        while(n.left != null){
+            n = n.left;
+        }
+        return n.key;
+    }
+
+    public void inorderPrint() {
+        inorder(root);
+        System.out.println();
+    }
+
+    private void inorder(BSTNode n) {
+        if (n != null) {
+            inorder(n.left);
+            System.out.print(n.key + " ");
+            inorder(n.right);
+        }
+    }
+
+}
+
+public class SMDCMakati {
+        public static void main(String[] args){
+
+            BST t = new BST();
+
+            int[] vals = {50, 30, 70, 20, 40, 60, 80};
+            for (int v : vals) {
+                t.insert(v);
+            }
+
+            System.out.print("Inorder after insertion: ");
+            t.inorderPrint();
+
+            System.out.println();
+
+            if(t.search(t.root, 40) == true){
+                System.out.println("Search 40: Found");
+            } else  {
+                System.out.println("Search 40: Not Found");
+            }
+            if(t.search(t.root, 100) == true){
+                System.out.println("Search 100: Found");
+            } else   {
+                System.out.println("Search 100: Not Found");
+            }
+
+            System.out.println();
+
+            System.out.print("After deleting 20: ");
+            t.deleteKey(20);
+            t.inorderPrint();
+            System.out.print("After deleting 30: ");
+            t.deleteKey(30);
+            t.inorderPrint();
+            System.out.print("After deleting 50: ");
+            t.deleteKey(50);
+            t.inorderPrint();
+            }
+}
+
+
+
+  </code></pre>
+    </div>
+    <script>
+        function copyCode() {
+            const code = document.getElementById("code-snippet").innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                alert("Code copied to clipboard!");
+            });
+        }
+
+    </script>
 </body>
 </html>
